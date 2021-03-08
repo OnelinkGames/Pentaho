@@ -4,7 +4,6 @@ O proposito deste ETL é servir como ferramenta de automação para as atividade
 
 # Pré-requisitos
 1. É necessário ter o Java 1.8 instalado na maquina para rodar o Pentaho.
-2. É necessário ter acesso a VPN da Embraer Comercial e uma forma de se conectar a ele.
 3. É necessário ter o Pentaho versão 9.0 instalado na maquina e rodando.
 
 # Instalação
