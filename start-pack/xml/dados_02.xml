@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<cadastro>
+<pessoas><nome>Antonio</nome> <sobrenome>Carlos</sobrenome> <idade>50</idade></pessoas>
+<pessoas><nome>Josefina</nome> <sobrenome>Augusta</sobrenome> <idade>45</idade></pessoas>
+</cadastro>

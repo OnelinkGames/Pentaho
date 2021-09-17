@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<cadastro>
+	<pessoas>
+		<nome>Carlos</nome>
+		<sobrenome>Augusto</sobrenome>
+		<idade>34</idade>
+	</pessoas>
+	<pessoas>
+		<nome>Maria</nome>
+		<sobrenome>Aparecida</sobrenome>
+		<idade>29</idade>
+	</pessoas> 
+</cadastro>

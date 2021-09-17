@@ -1,0 +1,15 @@
+{
+	"cadastro": {
+		"pessoas": [
+			{
+			"nome": "Carlos",
+			"sobrenome": "Augusto",
+			"idade": 34
+			}, {
+			"nome": "Maria",
+			"sobrenome": "Aparecida",
+			"idade": 29
+			}
+		]
+	}
+}
