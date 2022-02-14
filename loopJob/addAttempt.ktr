@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>kafka_receiver</name>
+    <name>addAttempt</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -427,34 +427,29 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2021/09/16 16:09:53.615</created_date>
+    <created_date>2022/02/14 15:12:52.384</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2021/09/16 16:09:53.615</modified_date>
-    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
+    <modified_date>2022/02/14 15:12:52.384</modified_date>
+    <key_for_session_key/>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
   <order>
     <hop>
-      <from>Get records from stream</from>
-      <to>Filter rows</to>
+      <from>getAttempt</from>
+      <to>addValue</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Filter rows</from>
-      <to>Write to log</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Filter rows</from>
-      <to>Abort</to>
+      <from>addValue</from>
+      <to>setAttempt</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Get records from stream</name>
-    <type>RecordsFromStream</type>
+    <name>getAttempt</name>
+    <type>GetVariable</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -465,40 +460,16 @@
     </partitioning>
     <fields>
       <field>
-        <name>Key</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Message</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Topic</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Partition</name>
+        <name>attempt</name>
+        <variable>${attempt}</variable>
         <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <length>-1</length>
         <precision>-1</precision>
-      </field>
-      <field>
-        <name>Offset</name>
-        <type>Integer</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Timestamp</name>
-        <type>Integer</type>
-        <length>-1</length>
-        <precision>-1</precision>
+        <trim_type>none</trim_type>
       </field>
     </fields>
     <attributes/>
@@ -510,14 +481,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
-      <yloc>272</yloc>
+      <xloc>256</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Write to log</name>
-    <type>WriteToLog</type>
+    <name>addValue</name>
+    <type>ScriptValueMod</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -526,29 +497,24 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <loglevel>log_level_basic</loglevel>
-    <displayHeader>Y</displayHeader>
-    <limitRows>N</limitRows>
-    <limitRowsNumber>0</limitRowsNumber>
-    <logmessage>Pentaho_01:</logmessage>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+var newAttempt = parseInt(attempt)+ 1;</jsScript_script>
+      </jsScript>
+    </jsScripts>
     <fields>
       <field>
-        <name>Key</name>
-      </field>
-      <field>
-        <name>Message</name>
-      </field>
-      <field>
-        <name>Topic</name>
-      </field>
-      <field>
-        <name>Partition</name>
-      </field>
-      <field>
-        <name>Offset</name>
-      </field>
-      <field>
-        <name>Timestamp</name>
+        <name>newAttempt</name>
+        <rename>newAttempt</rename>
+        <type>Integer</type>
+        <length>10</length>
+        <precision>0</precision>
+        <replace>N</replace>
       </field>
     </fields>
     <attributes/>
@@ -560,14 +526,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>448</xloc>
-      <yloc>272</yloc>
+      <xloc>384</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Filter rows</name>
-    <type>FilterRows</type>
+    <name>setAttempt</name>
+    <type>SetVariable</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -576,25 +542,15 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>Abort</send_true_to>
-    <send_false_to>Write to log</send_false_to>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue>Message</leftvalue>
-        <function>=</function>
-        <rightvalue/>
-        <value>
-          <name>constant</name>
-          <type>String</type>
-          <text>exit</text>
-          <length>-1</length>
-          <precision>-1</precision>
-          <isnull>N</isnull>
-          <mask/>
-        </value>
-      </condition>
-    </compare>
+    <fields>
+      <field>
+        <field_name>newAttempt</field_name>
+        <variable_name>attempt</variable_name>
+        <variable_type>ROOT_JOB</variable_type>
+        <default_value/>
+      </field>
+    </fields>
+    <use_formatting>Y</use_formatting>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -604,37 +560,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>320</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Abort</name>
-    <type>Abort</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <row_threshold>0</row_threshold>
-    <message>O processo foi parado atraves do KAFKA</message>
-    <always_log_rows>Y</always_log_rows>
-    <abort_option>ABORT_WITH_ERROR</abort_option>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>320</xloc>
-      <yloc>176</yloc>
+      <xloc>512</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
